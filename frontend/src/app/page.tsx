@@ -11,6 +11,7 @@ export default function HomePage() {
   const [name, setName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const eventYear = new Date().getFullYear()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,7 +85,7 @@ export default function HomePage() {
 
           <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full mb-4 shadow-sm">
             <span className="text-accent-gold">✦</span>
-            <span className="text-sm font-medium text-gray-600">2024 새해 특별 이벤트</span>
+            <span className="text-sm font-medium text-gray-600">{eventYear} 새해 특별 이벤트</span>
             <span className="text-accent-gold">✦</span>
           </div>
           

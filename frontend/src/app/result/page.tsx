@@ -1,34 +1,65 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useMemo, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import ScoreBar from '@/components/ScoreBar'
 import KeywordBadge from '@/components/KeywordBadge'
 import ItemCard from '@/components/ItemCard'
+import LoadingScreen from '@/components/LoadingScreen'
+import StickyFooter from '@/components/StickyFooter'
 import { fetchFortune, fetchRecommendedItems } from '@/lib/api'
 import type { FortuneResult, RecommendedItem } from '@/types'
 
-function LoadingScreen() {
-  return (
-    <div className="min-h-screen bg-cream flex flex-col items-center justify-center px-6">
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        className="mb-6"
-      >
-        <Image
-          src="/loading/3times.gif"
-          alt="로딩 중"
-          width={100}
-          height={100}
-          unoptimized
-        />
-      </motion.div>
-      <p className="text-gray-500 text-sm">취향을 찾고 있어요...</p>
-    </div>
-  )
+const COLOR_SEARCH_MAP: Record<string, string> = {
+  '코랄 핑크': '핑크',
+  '민트 그린': '민트',
+  '테라코타': '테라코타',
+  '크림 베이지': '베이지',
+  '라벤더 퍼플': '라벤더',
+  '인디고 블루': '인디고',
+  '머스타드 옐로우': '머스타드',
+  '올리브 그린': '올리브',
+  '버건디 레드': '버건디',
+  '스카이 블루': '하늘색',
+  '웜 그레이': '그레이',
+  '로즈 골드': '로즈골드',
+}
+
+const MATERIAL_SEARCH_MAP: Record<string, string> = {
+  '천연 가죽': '가죽',
+  '스털링 실버': '실버',
+  '핸드메이드 도자기': '도자기',
+  '천연 목재': '원목',
+  '오가닉 코튼': '면',
+  '프리미엄 울': '니트',
+  '14K 골드': '14k',
+  '천연 원석': '원석',
+  '아티잔 글라스': '유리',
+  '에코 레진': '레진',
+  '천연 염색': '천연염색',
+  '업사이클 소재': '업사이클',
+}
+
+function getCombinedSearchUrl(color?: string, material?: string) {
+  const searchTerms: string[] = []
+  if (color && COLOR_SEARCH_MAP[color]) searchTerms.push(COLOR_SEARCH_MAP[color])
+  if (material && MATERIAL_SEARCH_MAP[material]) searchTerms.push(MATERIAL_SEARCH_MAP[material])
+
+  if (searchTerms.length === 0) {
+    return 'https://www.idus.com/v2/search?keyword=핸드메이드&sort=popular'
+  }
+  return `https://www.idus.com/v2/search?keyword=${encodeURIComponent(searchTerms.join(' '))}&sort=popular`
+}
+
+function getMockCount(seed: string, base = 800) {
+  const hash = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return base + (hash % 2000)
+}
+
+function formatCount(count: number) {
+  return count.toLocaleString('ko-KR')
 }
 
 function ResultContent() {
@@ -85,8 +116,34 @@ function ResultContent() {
     }
   }
 
+  const combinedSearchUrl = useMemo(() => {
+    if (!fortune) return 'https://www.idus.com/v2/search?keyword=핸드메이드&sort=popular'
+    const colorValue = String(fortune.luckyKeywords.color.value || '')
+    const materialValue = String(fortune.luckyKeywords.material.value || '')
+    return getCombinedSearchUrl(colorValue, materialValue)
+  }, [fortune])
+
+  const combinedSearchLabel = useMemo(() => {
+    if (!fortune) return ''
+    const colorValue = String(fortune.luckyKeywords.color.value || '')
+    const materialValue = String(fortune.luckyKeywords.material.value || '')
+    const colorKeyword = COLOR_SEARCH_MAP[colorValue] || colorValue
+    const materialKeyword = MATERIAL_SEARCH_MAP[materialValue] || materialValue
+    return [colorKeyword, materialKeyword].filter(Boolean).join(' ')
+  }, [fortune])
+
+  const maxScore = useMemo(() => {
+    if (!fortune) return 0
+    return Math.max(...Object.values(fortune.scores).map((s) => s.score))
+  }, [fortune])
+
   if (isLoading) {
-    return <LoadingScreen />
+    return (
+      <LoadingScreen
+        message="취향을 찾고 있어요..."
+        subMessage="정성을 모아 오늘의 작품을 준비 중이에요"
+      />
+    )
   }
 
   if (error || !fortune) {
@@ -114,7 +171,7 @@ function ResultContent() {
   }
 
   return (
-    <div className="min-h-screen bg-cream pb-10">
+    <div className="min-h-screen bg-cream pb-24">
       {/* 배경 장식 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -right-20 w-64 h-64 bg-idus-orange/5 rounded-full blur-3xl" />
@@ -219,7 +276,7 @@ function ResultContent() {
             오늘의 취향 키워드
           </h3>
           <p className="text-xs text-gray-400 mb-4">
-            키워드를 클릭하면 아이디어스에서 관련 작품을 볼 수 있어요
+            키워드를 클릭하면 아이디어스에서 관련 작품을 바로 볼 수 있어요
           </p>
           <div className="space-y-1">
             {Object.entries(fortune.luckyKeywords).map(([key, keyword]) => (
@@ -234,6 +291,25 @@ function ResultContent() {
               />
             ))}
           </div>
+
+          {combinedSearchLabel && (
+            <div className="mt-4 rounded-2xl bg-cream-warm px-4 py-3">
+              <p className="text-xs text-gray-500 mb-2">
+                💡 취향 키워드를 조합하면 더 정확한 추천을 받을 수 있어요
+              </p>
+              <a
+                href={combinedSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between text-sm font-semibold text-idus-orange"
+              >
+                <span>“{combinedSearchLabel}” 조합 작품 보기</span>
+                <span className="text-xs text-gray-400">
+                  {formatCount(getMockCount(combinedSearchLabel, 900))}개
+                </span>
+              </a>
+            </div>
+          )}
         </motion.div>
 
         {/* 오늘의 취향 작품 - 실제 아이디어스 연결 */}
@@ -253,8 +329,11 @@ function ResultContent() {
               />
               오늘의 취향에 어울리는 작품
             </h3>
+            <p className="text-xs text-idus-orange font-semibold mb-1">
+              ⏰ 오늘의 추천은 자정에 바뀌어요
+            </p>
             <p className="text-sm text-gray-500 mb-4">
-              작가의 정성이 담긴 특별한 작품들을 만나보세요
+              당신의 취향 점수 {maxScore}점! 작가의 정성이 담긴 작품을 만나보세요
             </p>
             
             <div className="space-y-3">
@@ -262,6 +341,20 @@ function ResultContent() {
                 <ItemCard key={item.id} item={item} index={index} />
               ))}
             </div>
+
+            {combinedSearchLabel && (
+              <a
+                href={combinedSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center justify-between gap-2 text-sm font-semibold text-idus-orange bg-cream-warm px-4 py-3 rounded-xl hover:shadow-sm transition-all"
+              >
+                <span>🔍 “{combinedSearchLabel}” 조합으로 더 찾아보기</span>
+                <span className="text-xs text-gray-400">
+                  {formatCount(getMockCount(combinedSearchLabel, 1200))}개
+                </span>
+              </a>
+            )}
             
             {/* 카테고리 바로가기 - 인기순 정렬 */}
             {fortune.luckyKeywords.category.categoryUrl && (
@@ -269,10 +362,10 @@ function ResultContent() {
                 href={`${fortune.luckyKeywords.category.categoryUrl}?sort=popular`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 flex items-center justify-center gap-2 text-sm text-white font-medium py-3 bg-gradient-to-r from-idus-orange to-accent-coral rounded-xl hover:shadow-lg transition-all active:scale-[0.98]"
+                className="mt-3 flex items-center justify-center gap-2 text-sm text-white font-medium py-3 bg-gradient-to-r from-idus-orange to-accent-coral rounded-xl hover:shadow-lg transition-all active:scale-[0.98]"
               >
                 <span>{fortune.luckyKeywords.category.value}</span>
-                <span>작품 더 보기</span>
+                <span>인기 작품 구경하기</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -336,6 +429,19 @@ function ResultContent() {
           </a>
         </motion.div>
       </div>
+
+      <StickyFooter
+        primaryUrl={combinedSearchUrl}
+        primaryLabel="🧡 아이디어스에서 작품 보기"
+        secondaryUrl={
+          fortune.luckyKeywords.category.categoryUrl
+            ? `${fortune.luckyKeywords.category.categoryUrl}?sort=popular`
+            : undefined
+        }
+        secondaryLabel={
+          fortune.luckyKeywords.category.categoryUrl ? '카테고리' : undefined
+        }
+      />
     </div>
   )
 }

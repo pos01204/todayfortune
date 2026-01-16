@@ -43,6 +43,9 @@ export default function ItemCard({ item, index }: ItemCardProps) {
     return price.toLocaleString('ko-KR')
   }
 
+  const savedCount = 1200 + (item.id * 137) % 1300
+  const rating = (4.5 + (item.matchScore % 5) / 10).toFixed(1)
+
   // 카테고리에 맞는 일러스트 찾기
   const getIllustration = () => {
     if (item.category) {
@@ -146,6 +149,10 @@ export default function ItemCard({ item, index }: ItemCardProps) {
           )}
         </div>
 
+        <div className="text-[11px] text-gray-400 mt-1">
+          ❤️ {savedCount.toLocaleString('ko-KR')}명이 찜함 · ★ {rating}
+        </div>
+
         {/* 매칭 이유 태그 - 클릭 시 해당 키워드 검색 */}
         <div className="flex flex-wrap gap-1 mt-1.5">
           {item.matchReasons.slice(0, 2).map((reason, i) => (
@@ -157,6 +164,10 @@ export default function ItemCard({ item, index }: ItemCardProps) {
               {reason}
             </button>
           ))}
+        </div>
+
+        <div className="mt-2 text-[11px] font-semibold text-idus-orange">
+          🧡 아이디어스에서 보기 →
         </div>
       </div>
 
