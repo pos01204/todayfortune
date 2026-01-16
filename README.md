@@ -5,135 +5,127 @@
 
 바나프레소 포춘 메시지 이벤트를 레퍼런스로 한 **아이디어스 새해 취향 운세 이벤트 페이지**입니다.
 
-## ✨ 프로젝트 특징
+## ✨ 주요 기능
 
-### 아이디어스다움을 담다
-
-- **STORY (나만의 이야기)**: 생년월일로 시작되는 나만의 취향 이야기
-- **DISCOVERY (취향의 발견)**: 나도 몰랐던 취향을 발견하는 기쁨  
-- **CONNECTION (따뜻한 소통)**: 작가의 정성이 담긴 작품과의 연결
-
-### 운세 카테고리 (아이디어스 버전)
-
-| 카테고리 | 아이콘 | 설명 |
-|---------|--------|------|
-| 창작 에너지 | 🎨 | 오늘 새로운 것을 만들고 싶은 정도 |
-| 선물 운 | 🎁 | 소중한 사람에게 마음을 전하기 좋은 정도 |
-| 발견 운 | 🔍 | 새로운 취향을 발견할 가능성 |
-| 인연 운 | 💕 | 특별한 작가/작품과의 인연 |
-| 영감 지수 | ✨ | 일상에서 영감을 받을 가능성 |
+- 🎨 생년월일 기반 취향 운세 생성
+- 🔗 **키워드 클릭 시 실제 아이디어스 검색/카테고리 페이지로 이동**
+- 💝 취향에 맞는 작품 추천 (아이디어스 연동)
+- 📱 모바일 최적화 UI
 
 ## 📁 프로젝트 구조
 
 ```
 todayfortune/
-├── frontend/          # Next.js 프론트엔드 (Vercel)
+├── frontend/          # Next.js (Vercel 배포)
 │   ├── src/
-│   │   ├── app/      # 페이지들
-│   │   ├── components/
-│   │   ├── lib/
-│   │   └── types/
-│   ├── brand/        # 아이디어스 브랜드 에셋
-│   ├── fonts/        # SUITE 폰트
-│   └── loading/      # 로딩 GIF
+│   ├── public/        # 브랜드 에셋
+│   └── package.json
 │
-├── backend/          # Express 백엔드 (Railway)
+├── backend/           # Express (Railway 배포)
 │   └── src/
 │       ├── routes/
 │       ├── services/
 │       └── data/
 │
-└── docs/             # 설계 문서
-    ├── ARCHITECTURE.md
-    └── API.md
+└── docs/              # 설계 문서
 ```
 
-## 🚀 시작하기
+## 🚀 배포 가이드
 
-### 사전 요구사항
+### ⚠️ 중요: Root Directory 설정
 
-- Node.js 18+
-- npm 또는 yarn
+**이 프로젝트는 모노레포 구조입니다. 배포 시 반드시 Root Directory를 설정해주세요!**
 
-### 백엔드 실행
+---
+
+### Vercel (Frontend) 배포
+
+1. [vercel.com](https://vercel.com) → Import Git Repository
+2. Repository: `pos01204/todayfortune` 선택
+3. **🔴 Configure Project에서:**
+   - **Root Directory**: `frontend` 입력
+   - Framework Preset: Next.js (자동 감지)
+4. Environment Variables 설정:
+   - `NEXT_PUBLIC_API_URL` = Railway 백엔드 URL (나중에 설정)
+5. Deploy 클릭
+
+![Vercel Root Directory](https://vercel.com/docs/static/concepts/projects/project-settings/root-directory.png)
+
+---
+
+### Railway (Backend) 배포
+
+1. [railway.app](https://railway.app) → New Project → Deploy from GitHub
+2. Repository: `pos01204/todayfortune` 선택
+3. **🔴 Service Settings에서:**
+   - **Root Directory**: `backend` 입력
+4. Variables 탭에서:
+   - `PORT` = `3001`
+   - `NODE_ENV` = `production`
+5. Deploy 클릭
+
+**Railway Root Directory 설정 방법:**
+- Service 클릭 → Settings → 스크롤해서 "Root Directory" 찾기 → `backend` 입력
+
+---
+
+### 배포 후 설정
+
+1. Railway에서 배포된 백엔드 URL 복사 (예: `https://xxx.railway.app`)
+2. Vercel → Settings → Environment Variables
+3. `NEXT_PUBLIC_API_URL` = 복사한 Railway URL 입력
+4. Vercel 재배포 (Deployments → ... → Redeploy)
+
+---
+
+## 🔗 아이디어스 연동
+
+취향 키워드 클릭 시 실제 아이디어스로 이동:
+
+| 키워드 | URL 예시 |
+|--------|----------|
+| 오늘의 컬러: 핑크 | `https://www.idus.com/v2/search?keyword=핑크` |
+| 끌리는 소재: 가죽 | `https://www.idus.com/v2/search?keyword=가죽` |
+| 취향 카테고리: 주얼리 | `https://www.idus.com/v2/category/jewelry` |
+
+## 💻 로컬 개발
+
+### 백엔드
 
 ```bash
 cd backend
 npm install
 npm run dev
+# http://localhost:3001
 ```
 
-서버가 `http://localhost:3001`에서 실행됩니다.
-
-### 프론트엔드 실행
+### 프론트엔드
 
 ```bash
 cd frontend
+
+# 브랜드 에셋 설정 (Windows)
+.\setup.bat
+
+# 또는 PowerShell
+.\setup.ps1
+
 npm install
 npm run dev
+# http://localhost:3000
 ```
-
-개발 서버가 `http://localhost:3000`에서 실행됩니다.
 
 ## 🎨 브랜드 에셋
 
-### 컬러
-
-```css
---idus-orange: #FF6B35;    /* 프라이머리 */
---cream: #FFF9F5;          /* 배경 */
---accent-coral: #FF8A65;   /* 강조 */
---accent-peach: #FFCCBC;   /* 보조 */
-```
-
-### 폰트
-
-- **SUITE**: 아이디어스 브랜드 폰트
-
-### 일러스트
-
-- 선물, 주얼리, 캔들, 도자기 등 아이디어스 일러스트 활용
-
-## 📡 API
-
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| POST | `/api/fortune` | 취향 운세 생성 |
-| GET | `/api/items/recommend` | 추천 작품 조회 |
-| GET | `/health` | 헬스체크 |
-
-## 🚢 배포
-
-### Vercel (Frontend)
-
-1. GitHub 연결 → Root: `frontend`
-2. 환경변수: `NEXT_PUBLIC_API_URL` = Railway 백엔드 URL
-
-### Railway (Backend)
-
-1. GitHub 연결 → Root: `backend`
-2. 자동 빌드 & 배포
+- **폰트**: SUITE (아이디어스 브랜드 폰트)
+- **컬러**: 아이디어스 오렌지 `#FF6B35`
+- **일러스트**: 아이디어스 공식 일러스트
 
 ## 📝 문서
 
 - [시스템 아키텍처](./docs/ARCHITECTURE.md)
 - [API 명세서](./docs/API.md)
 
-## 🤝 브랜드 가이드
-
-### DO ✅
-- 따뜻하고 친근한 말투
-- "작품"이라는 표현 사용
-- 작가의 정성과 이야기 강조
-- 취향과 발견의 즐거움 전달
-
-### DON'T ❌
-- 최저가, 빠른 배송 강조
-- "상품", "물건"이라는 표현
-- 차갑고 기계적인 톤
-
 ---
 
 **Made with 🧡 for 아이디어스**
-
-아이디어스는 작가와 고객의 취향을 연결하는 핸드메이드 라이프스타일 플랫폼입니다.

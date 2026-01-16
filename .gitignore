@@ -46,3 +46,7 @@ coverage/
 
 # Thumbnails
 Thumbs.db
+
+# Root package files (monorepo - use frontend/backend package.json)
+/package-lock.json
+/package.json
