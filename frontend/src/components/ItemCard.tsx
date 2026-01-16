@@ -30,6 +30,14 @@ const categoryIllustrations: Record<string, string> = {
   '플랜트': '/brand/brand assets/플랜트.png',
 }
 
+// 매칭 이유 → 검색 키워드 매핑
+const matchReasonToKeyword: Record<string, string> = {
+  '오늘의 컬러 매칭': 'color',
+  '끌리는 소재 매칭': 'material',
+  '취향 카테고리 매칭': 'category',
+  '오늘의 추천 작품': 'handmade',
+}
+
 export default function ItemCard({ item, index }: ItemCardProps) {
   const formatPrice = (price: number) => {
     return price.toLocaleString('ko-KR')
@@ -45,7 +53,6 @@ export default function ItemCard({ item, index }: ItemCardProps) {
       }
     }
     
-    // 태그에서 찾기
     if (item.tags) {
       for (const tag of item.tags) {
         for (const [keyword, path] of Object.entries(categoryIllustrations)) {
@@ -59,8 +66,32 @@ export default function ItemCard({ item, index }: ItemCardProps) {
     return '/brand/brand assets/선물.png'
   }
 
-  // 실제 아이디어스 URL 사용
+  // 실제 아이디어스 조합 검색 URL 사용
   const itemUrl = item.searchUrl || item.productUrl
+
+  // 매칭 이유 태그 클릭 핸들러 (이벤트 버블링 방지)
+  const handleTagClick = (e: React.MouseEvent, reason: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // 매칭 이유에 따른 검색 URL 생성
+    let searchKeyword = ''
+    if (reason.includes('컬러')) {
+      searchKeyword = item.tags?.find(t => 
+        ['핑크', '민트', '베이지', '라벤더', '인디고', '테라코타', '머스타드', '올리브', '버건디', '그레이'].some(c => t.includes(c))
+      ) || ''
+    } else if (reason.includes('소재')) {
+      searchKeyword = item.tags?.find(t => 
+        ['가죽', '실버', '도자기', '원목', '면', '니트', '14k', '골드', '원석', '레진', '울'].some(m => t.includes(m))
+      ) || ''
+    }
+    
+    if (searchKeyword) {
+      window.open(`https://www.idus.com/v2/search?keyword=${encodeURIComponent(searchKeyword)}`, '_blank')
+    } else {
+      window.open(itemUrl, '_blank')
+    }
+  }
 
   return (
     <motion.a
@@ -115,15 +146,16 @@ export default function ItemCard({ item, index }: ItemCardProps) {
           )}
         </div>
 
-        {/* 매칭 이유 태그 */}
+        {/* 매칭 이유 태그 - 클릭 시 해당 키워드 검색 */}
         <div className="flex flex-wrap gap-1 mt-1.5">
           {item.matchReasons.slice(0, 2).map((reason, i) => (
-            <span 
+            <button 
               key={i}
-              className="text-[10px] bg-idus-orange/10 text-idus-orange px-2 py-0.5 rounded-full"
+              onClick={(e) => handleTagClick(e, reason)}
+              className="text-[10px] bg-idus-orange/10 text-idus-orange px-2 py-0.5 rounded-full hover:bg-idus-orange hover:text-white transition-colors cursor-pointer"
             >
               {reason}
-            </span>
+            </button>
           ))}
         </div>
       </div>

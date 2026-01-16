@@ -263,13 +263,13 @@ function ResultContent() {
               ))}
             </div>
             
-            {/* 카테고리 바로가기 */}
+            {/* 카테고리 바로가기 - 인기순 정렬 */}
             {fortune.luckyKeywords.category.categoryUrl && (
               <a
-                href={fortune.luckyKeywords.category.categoryUrl}
+                href={`${fortune.luckyKeywords.category.categoryUrl}?sort=popular`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 flex items-center justify-center gap-2 text-sm text-white font-medium py-3 bg-gradient-to-r from-idus-orange to-accent-coral rounded-xl hover:shadow-lg transition-all"
+                className="mt-5 flex items-center justify-center gap-2 text-sm text-white font-medium py-3 bg-gradient-to-r from-idus-orange to-accent-coral rounded-xl hover:shadow-lg transition-all active:scale-[0.98]"
               >
                 <span>{fortune.luckyKeywords.category.value}</span>
                 <span>작품 더 보기</span>
