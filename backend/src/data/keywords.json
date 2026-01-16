@@ -31,25 +31,25 @@
     { 
       "name": "주얼리/액세서리", 
       "searchKeyword": "주얼리",
-      "categoryUrl": "https://www.idus.com/v2/category/jewelry",
+      "categoryUrl": "https://www.idus.com/v2/category/1047",
       "description": "나만의 스타일을 완성하는"
     },
     { 
       "name": "홈리빙/인테리어", 
       "searchKeyword": "홈데코",
-      "categoryUrl": "https://www.idus.com/v2/category/homeliving",
+      "categoryUrl": "https://www.idus.com/v2/category/1049",
       "description": "공간에 온기를 더하는"
     },
     { 
       "name": "패션/잡화", 
       "searchKeyword": "패션잡화",
-      "categoryUrl": "https://www.idus.com/v2/category/fashion",
+      "categoryUrl": "https://www.idus.com/v2/category/1048",
       "description": "일상을 특별하게 만드는"
     },
     { 
-      "name": "문구/다이어리", 
+      "name": "케이스/문구", 
       "searchKeyword": "문구",
-      "categoryUrl": "https://www.idus.com/v2/category/stationery",
+      "categoryUrl": "https://www.idus.com/v2/category/1050",
       "description": "매일을 기록하는"
     },
     { 
@@ -59,34 +59,34 @@
       "description": "감성을 소장하는"
     },
     { 
-      "name": "디저트/베이커리", 
+      "name": "식품/디저트", 
       "searchKeyword": "디저트",
-      "categoryUrl": "https://www.idus.com/v2/category/food",
+      "categoryUrl": "https://www.idus.com/v2/category/1046",
       "description": "정성을 맛보는"
     },
     { 
       "name": "반려동물", 
       "searchKeyword": "반려동물",
-      "categoryUrl": "https://www.idus.com/v2/search?keyword=반려동물",
+      "categoryUrl": "https://www.idus.com/v2/category/1052",
       "description": "함께하는 행복을 위한"
     },
     { 
-      "name": "키즈/베이비", 
-      "searchKeyword": "키즈",
-      "categoryUrl": "https://www.idus.com/v2/search?keyword=키즈",
+      "name": "영유아/출산", 
+      "searchKeyword": "베이비",
+      "categoryUrl": "https://www.idus.com/v2/category/1053",
       "description": "작은 손을 위한"
     },
     { 
       "name": "뷰티/향기", 
       "searchKeyword": "향수",
-      "categoryUrl": "https://www.idus.com/v2/search?keyword=뷰티",
+      "categoryUrl": "https://www.idus.com/v2/category/1051",
       "description": "나를 가꾸는"
     },
     { 
-      "name": "플랜트/가드닝", 
-      "searchKeyword": "화분",
-      "categoryUrl": "https://www.idus.com/v2/search?keyword=플랜트",
-      "description": "자연과 함께하는"
+      "name": "공예/DIY", 
+      "searchKeyword": "공예",
+      "categoryUrl": "https://www.idus.com/v2/category/1054",
+      "description": "손으로 만드는 즐거움"
     }
   ],
   "directions": [

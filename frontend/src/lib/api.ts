@@ -92,12 +92,13 @@ function getMockFortune(birthDate: string, name?: string): FortuneResult {
     { name: '프리미엄 울', searchKeyword: '니트' },
   ]
   
+  // 실제 아이디어스 카테고리 ID 기반 URL
   const categoryOptions = [
-    { name: '주얼리/액세서리', searchKeyword: '주얼리', categoryUrl: 'https://www.idus.com/v2/category/jewelry' },
-    { name: '홈리빙/인테리어', searchKeyword: '홈데코', categoryUrl: 'https://www.idus.com/v2/category/homeliving' },
-    { name: '패션/잡화', searchKeyword: '패션잡화', categoryUrl: 'https://www.idus.com/v2/category/fashion' },
-    { name: '문구/다이어리', searchKeyword: '문구', categoryUrl: 'https://www.idus.com/v2/category/stationery' },
-    { name: '디저트/베이커리', searchKeyword: '디저트', categoryUrl: 'https://www.idus.com/v2/category/food' },
+    { name: '주얼리/액세서리', searchKeyword: '주얼리', categoryUrl: 'https://www.idus.com/v2/category/1047' },
+    { name: '홈리빙/인테리어', searchKeyword: '홈데코', categoryUrl: 'https://www.idus.com/v2/category/1049' },
+    { name: '패션/잡화', searchKeyword: '패션잡화', categoryUrl: 'https://www.idus.com/v2/category/1048' },
+    { name: '케이스/문구', searchKeyword: '문구', categoryUrl: 'https://www.idus.com/v2/category/1050' },
+    { name: '식품/디저트', searchKeyword: '디저트', categoryUrl: 'https://www.idus.com/v2/category/1046' },
   ]
   
   const directions = ['동쪽', '서쪽', '남쪽', '북쪽']

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
-import fortunes from '../data/fortunes.json' assert { type: 'json' }
-import keywords from '../data/keywords.json' assert { type: 'json' }
+import { fortunes } from '../data/fortunes'
+import { keywords } from '../data/keywords'
 
 interface ColorKeyword {
   name: string
@@ -31,8 +31,8 @@ interface FortuneResult {
     value: string | number
     icon: string
     hex?: string
-    searchUrl?: string  // 아이디어스 검색 URL
-    categoryUrl?: string // 카테고리 URL
+    searchUrl?: string
+    categoryUrl?: string
   }>
   zodiac: { animal: string; emoji: string; year: number }
   constellation: { name: string; emoji: string; period: string }
@@ -72,38 +72,35 @@ function getZodiac(year: number) {
 /**
  * 별자리 계산
  */
-function getConstellation(month: number, day: number) {
+function getConstellation(month: number, day: number): { name: string; emoji: string; period: string } {
   const constellations = [
-    { name: '염소자리', emoji: '♑', start: [12, 22], end: [1, 19] },
-    { name: '물병자리', emoji: '♒', start: [1, 20], end: [2, 18] },
-    { name: '물고기자리', emoji: '♓', start: [2, 19], end: [3, 20] },
-    { name: '양자리', emoji: '♈', start: [3, 21], end: [4, 19] },
-    { name: '황소자리', emoji: '♉', start: [4, 20], end: [5, 20] },
-    { name: '쌍둥이자리', emoji: '♊', start: [5, 21], end: [6, 21] },
-    { name: '게자리', emoji: '♋', start: [6, 22], end: [7, 22] },
-    { name: '사자자리', emoji: '♌', start: [7, 23], end: [8, 22] },
-    { name: '처녀자리', emoji: '♍', start: [8, 23], end: [9, 22] },
-    { name: '천칭자리', emoji: '♎', start: [9, 23], end: [10, 23] },
-    { name: '전갈자리', emoji: '♏', start: [10, 24], end: [11, 22] },
-    { name: '사수자리', emoji: '♐', start: [11, 23], end: [12, 21] },
+    { name: '염소자리', emoji: '♑', startMonth: 12, startDay: 22, endMonth: 1, endDay: 19 },
+    { name: '물병자리', emoji: '♒', startMonth: 1, startDay: 20, endMonth: 2, endDay: 18 },
+    { name: '물고기자리', emoji: '♓', startMonth: 2, startDay: 19, endMonth: 3, endDay: 20 },
+    { name: '양자리', emoji: '♈', startMonth: 3, startDay: 21, endMonth: 4, endDay: 19 },
+    { name: '황소자리', emoji: '♉', startMonth: 4, startDay: 20, endMonth: 5, endDay: 20 },
+    { name: '쌍둥이자리', emoji: '♊', startMonth: 5, startDay: 21, endMonth: 6, endDay: 21 },
+    { name: '게자리', emoji: '♋', startMonth: 6, startDay: 22, endMonth: 7, endDay: 22 },
+    { name: '사자자리', emoji: '♌', startMonth: 7, startDay: 23, endMonth: 8, endDay: 22 },
+    { name: '처녀자리', emoji: '♍', startMonth: 8, startDay: 23, endMonth: 9, endDay: 22 },
+    { name: '천칭자리', emoji: '♎', startMonth: 9, startDay: 23, endMonth: 10, endDay: 23 },
+    { name: '전갈자리', emoji: '♏', startMonth: 10, startDay: 24, endMonth: 11, endDay: 22 },
+    { name: '사수자리', emoji: '♐', startMonth: 11, startDay: 23, endMonth: 12, endDay: 21 },
   ]
 
   for (const c of constellations) {
-    const [startMonth, startDay] = c.start
-    const [endMonth, endDay] = c.end
-    
-    if (startMonth === 12 && endMonth === 1) {
-      if ((month === 12 && day >= startDay) || (month === 1 && day <= endDay)) {
-        return { name: c.name, emoji: c.emoji, period: `${startMonth}/${startDay} - ${endMonth}/${endDay}` }
+    if (c.startMonth === 12 && c.endMonth === 1) {
+      if ((month === 12 && day >= c.startDay) || (month === 1 && day <= c.endDay)) {
+        return { name: c.name, emoji: c.emoji, period: `${c.startMonth}/${c.startDay} - ${c.endMonth}/${c.endDay}` }
       }
     } else {
-      if ((month === startMonth && day >= startDay) || (month === endMonth && day <= endDay)) {
-        return { name: c.name, emoji: c.emoji, period: `${startMonth}/${startDay} - ${endMonth}/${endDay}` }
+      if ((month === c.startMonth && day >= c.startDay) || (month === c.endMonth && day <= c.endDay)) {
+        return { name: c.name, emoji: c.emoji, period: `${c.startMonth}/${c.startDay} - ${c.endMonth}/${c.endDay}` }
       }
     }
   }
   
-  return constellations[0]
+  return { name: '물병자리', emoji: '♒', period: '1/20 - 2/18' }
 }
 
 /**
@@ -139,14 +136,11 @@ export function generateFortune(birthDate: string, name?: string): FortuneResult
   const month = parseInt(monthStr)
   const day = parseInt(dayStr)
   
-  // 오늘 날짜 + 생년월일 조합으로 시드 생성
   const today = new Date()
   const seed = year + month * 100 + day * 10000 + today.getDate() * 100000 + (today.getMonth() + 1) * 1000000
   
-  // 운세 메시지 선택
   const message = seededSelect(fortunes.messages, seed)
   
-  // 행운 키워드 선택 (타입 명시)
   const luckyColor = seededSelect(keywords.colors, seed + 1) as ColorKeyword
   const luckyMaterial = seededSelect(keywords.materials, seed + 2) as MaterialKeyword
   const luckyCategory = seededSelect(keywords.categories, seed + 3) as CategoryKeyword
@@ -156,7 +150,6 @@ export function generateFortune(birthDate: string, name?: string): FortuneResult
   const zodiac = getZodiac(year)
   const constellation = getConstellation(month, day)
   
-  // 아이디어스 취향 카테고리 점수 + 실제 검색 URL
   return {
     id: `fortune_${today.toISOString().split('T')[0]}_${uuidv4().substring(0, 8)}`,
     userName: name || '회원',

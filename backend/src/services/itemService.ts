@@ -1,5 +1,5 @@
-import items from '../data/items.json' assert { type: 'json' }
-import keywords from '../data/keywords.json' assert { type: 'json' }
+import { items } from '../data/items'
+import { keywords } from '../data/keywords'
 
 interface RecommendParams {
   color?: string
@@ -26,7 +26,7 @@ interface RecommendedItem {
   matchScore: number
   matchReasons: string[]
   productUrl: string
-  searchUrl: string  // 아이디어스 검색 URL
+  searchUrl: string
 }
 
 /**
@@ -66,17 +66,14 @@ function findCategoryUrl(categoryName: string): string {
 export function getRecommendedItems(params: RecommendParams): RecommendedItem[] {
   const { color, material, category, limit = 3 } = params
   
-  // 검색 키워드 준비
   const colorKeyword = color ? findColorSearchKeyword(color) : ''
   const materialKeyword = material ? findMaterialSearchKeyword(material) : ''
   
-  // 매칭 점수 계산 및 아이템 생성
-  const scoredItems = items.items.map((item, index) => {
+  const scoredItems = items.items.map((item) => {
     let matchScore = 50
     const matchReasons: string[] = []
     const searchKeywords: string[] = []
     
-    // 컬러 매칭
     if (color && item.tags.some(tag => 
       tag.toLowerCase().includes(color.toLowerCase()) || 
       color.toLowerCase().includes(tag.toLowerCase()) ||
@@ -87,7 +84,6 @@ export function getRecommendedItems(params: RecommendParams): RecommendedItem[] 
       searchKeywords.push(colorKeyword)
     }
     
-    // 소재 매칭
     if (material && item.tags.some(tag => 
       tag.toLowerCase().includes(material.toLowerCase()) ||
       material.toLowerCase().includes(tag.toLowerCase()) ||
@@ -98,27 +94,21 @@ export function getRecommendedItems(params: RecommendParams): RecommendedItem[] 
       searchKeywords.push(materialKeyword)
     }
     
-    // 카테고리 매칭
     if (category && item.category.toLowerCase().includes(category.toLowerCase())) {
       matchScore += 15
       matchReasons.push('취향 카테고리 매칭')
     }
     
-    // 매칭 이유가 없으면 기본 이유 추가
     if (matchReasons.length === 0) {
       matchReasons.push('오늘의 추천 작품')
     }
 
-    // 검색 URL 생성 - 여러 키워드 조합
     let searchUrl: string
     if (searchKeywords.length > 0) {
-      // 매칭된 키워드로 검색
       searchUrl = generateIdusSearchUrl(searchKeywords.join(' '))
     } else if (category) {
-      // 카테고리 URL 사용
       searchUrl = findCategoryUrl(category)
     } else {
-      // 기본 검색
       searchUrl = generateIdusSearchUrl(item.tags[0] || '핸드메이드')
     }
     
@@ -127,11 +117,10 @@ export function getRecommendedItems(params: RecommendParams): RecommendedItem[] 
       matchScore: Math.min(100, matchScore),
       matchReasons,
       searchUrl,
-      productUrl: searchUrl, // 실제 상품 대신 검색 결과로 연결
+      productUrl: searchUrl,
     }
   })
   
-  // 매칭 점수로 정렬하고 상위 N개 반환
   return scoredItems
     .sort((a, b) => b.matchScore - a.matchScore)
     .slice(0, limit)
@@ -143,7 +132,6 @@ export function getRecommendedItems(params: RecommendParams): RecommendedItem[] 
 export function getLuckyItem(luckyKeywords: LuckyKeywords): RecommendedItem | null {
   const { color, material, category } = luckyKeywords
   
-  // 검색 키워드 조합
   const searchTerms: string[] = []
   
   if (color?.value) {
@@ -199,7 +187,6 @@ export function generateSearchUrls(luckyKeywords: LuckyKeywords) {
     urls.categoryUrl = findCategoryUrl(luckyKeywords.category.value)
   }
   
-  // 조합 검색 URL
   const allKeywords: string[] = []
   if (luckyKeywords.color?.value) allKeywords.push(findColorSearchKeyword(luckyKeywords.color.value))
   if (luckyKeywords.material?.value) allKeywords.push(findMaterialSearchKeyword(luckyKeywords.material.value))
