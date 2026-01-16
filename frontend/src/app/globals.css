@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SUITE 폰트 */
+@font-face {
+  font-family: 'SUITE';
+  src: url('/fonts/SUITE-Variable-woff2/SUITE-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Primary - 아이디어스 오렌지 */
+  --idus-orange: #FF6B35;
+  --idus-orange-90: rgba(255, 107, 53, 0.9);
+  --idus-orange-70: rgba(255, 107, 53, 0.7);
+  --idus-orange-50: rgba(255, 107, 53, 0.5);
+  --idus-orange-30: rgba(255, 107, 53, 0.3);
+  --idus-orange-10: rgba(255, 107, 53, 0.1);
+  
+  /* Background */
+  --cream: #FFF9F5;
+  --cream-warm: #FFF5EB;
+  --cream-soft: #FFFBF7;
+  
+  /* Text */
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  
+  /* Accent */
+  --accent-coral: #FF8A65;
+  --accent-peach: #FFCCBC;
+  --accent-gold: #FFB74D;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'SUITE', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--cream);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* 커스텀 스크롤바 */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--idus-orange-30);
+  border-radius: 4px;
+}
+
+/* 그리드 패턴 배경 */
+.bg-pattern {
+  background-image: url('/brand/brand assets/pattern01.png');
+  background-repeat: repeat;
+  background-size: 100px;
+  opacity: 0.03;
+}
+
+/* 점수 바 애니메이션 */
+.score-bar {
+  transition: width 1s ease-out;
+}
+
+/* 반짝이 효과 */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+.sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* 플로팅 애니메이션 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 선물상자 바운스 애니메이션 */
+@keyframes gift-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+.gift-bounce {
+  animation: gift-bounce 2s ease-in-out infinite;
+}
+
+/* 카드 그림자 - 따뜻한 느낌 */
+.card-shadow {
+  box-shadow: 0 4px 24px rgba(255, 107, 53, 0.08);
+}
+
+.card-shadow-hover {
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.12);
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+  @apply bg-gradient-to-r from-[#FF6B35] to-[#FF8A65];
+  @apply text-white font-semibold py-4 px-8 rounded-full;
+  @apply transition-all duration-300 ease-out;
+  @apply hover:shadow-lg hover:scale-[1.02];
+  @apply active:scale-[0.98];
+}
+
+.btn-secondary {
+  @apply bg-white border-2 border-[#FF6B35];
+  @apply text-[#FF6B35] font-semibold py-3 px-6 rounded-full;
+  @apply transition-all duration-300;
+  @apply hover:bg-[#FFF5EB];
+}
+
+/* 입력 필드 스타일 */
+.input-field {
+  @apply w-full px-4 py-4 rounded-2xl;
+  @apply bg-white border-2 border-gray-100;
+  @apply focus:border-[#FF6B35] focus:outline-none;
+  @apply transition-all duration-200;
+  font-family: 'SUITE', sans-serif;
+}
+
+.input-field:focus {
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+}
+
+/* 태그 스타일 */
+.tag {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm;
+  @apply bg-[#FFF5EB] text-[#FF6B35];
+}
+
+/* 별 장식 */
+.star-decoration::before,
+.star-decoration::after {
+  content: '✦';
+  color: var(--accent-gold);
+  font-size: 0.75rem;
+}
+
+/* 선택 불가 */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 로딩 오버레이 */
+.loading-overlay {
+  @apply fixed inset-0 bg-white/90 backdrop-blur-sm;
+  @apply flex items-center justify-center z-50;
+}

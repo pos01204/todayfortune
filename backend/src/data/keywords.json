@@ -1,0 +1,102 @@
+{
+  "colors": [
+    { "name": "코랄 핑크", "hex": "#FF7F7F", "searchKeyword": "핑크", "tags": ["분홍", "핑크", "코랄", "로맨틱"] },
+    { "name": "민트 그린", "hex": "#98D8C8", "searchKeyword": "민트", "tags": ["민트", "초록", "그린", "청량"] },
+    { "name": "테라코타", "hex": "#E2725B", "searchKeyword": "테라코타", "tags": ["테라코타", "브릭", "흙빛", "따뜻함"] },
+    { "name": "크림 베이지", "hex": "#F5F0E1", "searchKeyword": "베이지", "tags": ["베이지", "아이보리", "크림", "내추럴"] },
+    { "name": "인디고 블루", "hex": "#4B6587", "searchKeyword": "인디고", "tags": ["인디고", "네이비", "블루", "차분함"] },
+    { "name": "머스타드 옐로우", "hex": "#E4AB4D", "searchKeyword": "머스타드", "tags": ["머스타드", "노랑", "빈티지"] },
+    { "name": "라벤더 퍼플", "hex": "#B4A7D6", "searchKeyword": "라벤더", "tags": ["라벤더", "퍼플", "보라", "힐링"] },
+    { "name": "올리브 그린", "hex": "#808000", "searchKeyword": "올리브", "tags": ["올리브", "카키", "자연"] },
+    { "name": "버건디 레드", "hex": "#800020", "searchKeyword": "버건디", "tags": ["버건디", "와인", "클래식"] },
+    { "name": "스카이 블루", "hex": "#87CEEB", "searchKeyword": "하늘색", "tags": ["하늘", "블루", "청명"] },
+    { "name": "웜 그레이", "hex": "#9E9E9E", "searchKeyword": "그레이", "tags": ["그레이", "모던", "심플"] },
+    { "name": "로즈 골드", "hex": "#B76E79", "searchKeyword": "로즈골드", "tags": ["로즈골드", "핑크골드", "우아함"] }
+  ],
+  "materials": [
+    { "name": "천연 가죽", "searchKeyword": "가죽", "tags": ["가죽", "레더"], "description": "시간이 갈수록 멋스러워지는" },
+    { "name": "스털링 실버", "searchKeyword": "실버", "tags": ["실버", "은"], "description": "은은하게 빛나는" },
+    { "name": "오가닉 코튼", "searchKeyword": "면", "tags": ["면", "코튼", "린넨"], "description": "자연의 부드러움을 담은" },
+    { "name": "천연 목재", "searchKeyword": "원목", "tags": ["나무", "우드", "원목"], "description": "나무의 온기가 느껴지는" },
+    { "name": "핸드메이드 도자기", "searchKeyword": "도자기", "tags": ["도자기", "세라믹", "토기"], "description": "손으로 빚은 정성이 담긴" },
+    { "name": "아티잔 글라스", "searchKeyword": "유리", "tags": ["유리", "글라스"], "description": "빛을 머금은" },
+    { "name": "14K 골드", "searchKeyword": "14k", "tags": ["금", "골드"], "description": "영원히 빛나는" },
+    { "name": "천연 원석", "searchKeyword": "원석", "tags": ["원석", "보석", "크리스탈"], "description": "자연이 만든" },
+    { "name": "프리미엄 울", "searchKeyword": "니트", "tags": ["울", "니트", "양모"], "description": "포근한 온기를 전하는" },
+    { "name": "에코 레진", "searchKeyword": "레진", "tags": ["레진", "아크릴"], "description": "투명한 아름다움을 담은" },
+    { "name": "천연 염색", "searchKeyword": "천연염색", "tags": ["염색", "인디고", "천연"], "description": "자연의 색을 입은" },
+    { "name": "업사이클 소재", "searchKeyword": "업사이클", "tags": ["업사이클", "친환경", "지속가능"], "description": "새로운 가치를 담은" }
+  ],
+  "categories": [
+    { 
+      "name": "주얼리/액세서리", 
+      "searchKeyword": "주얼리",
+      "categoryUrl": "https://www.idus.com/v2/category/jewelry",
+      "description": "나만의 스타일을 완성하는"
+    },
+    { 
+      "name": "홈리빙/인테리어", 
+      "searchKeyword": "홈데코",
+      "categoryUrl": "https://www.idus.com/v2/category/homeliving",
+      "description": "공간에 온기를 더하는"
+    },
+    { 
+      "name": "패션/잡화", 
+      "searchKeyword": "패션잡화",
+      "categoryUrl": "https://www.idus.com/v2/category/fashion",
+      "description": "일상을 특별하게 만드는"
+    },
+    { 
+      "name": "문구/다이어리", 
+      "searchKeyword": "문구",
+      "categoryUrl": "https://www.idus.com/v2/category/stationery",
+      "description": "매일을 기록하는"
+    },
+    { 
+      "name": "일러스트/사진", 
+      "searchKeyword": "일러스트",
+      "categoryUrl": "https://www.idus.com/v2/search?keyword=일러스트",
+      "description": "감성을 소장하는"
+    },
+    { 
+      "name": "디저트/베이커리", 
+      "searchKeyword": "디저트",
+      "categoryUrl": "https://www.idus.com/v2/category/food",
+      "description": "정성을 맛보는"
+    },
+    { 
+      "name": "반려동물", 
+      "searchKeyword": "반려동물",
+      "categoryUrl": "https://www.idus.com/v2/search?keyword=반려동물",
+      "description": "함께하는 행복을 위한"
+    },
+    { 
+      "name": "키즈/베이비", 
+      "searchKeyword": "키즈",
+      "categoryUrl": "https://www.idus.com/v2/search?keyword=키즈",
+      "description": "작은 손을 위한"
+    },
+    { 
+      "name": "뷰티/향기", 
+      "searchKeyword": "향수",
+      "categoryUrl": "https://www.idus.com/v2/search?keyword=뷰티",
+      "description": "나를 가꾸는"
+    },
+    { 
+      "name": "플랜트/가드닝", 
+      "searchKeyword": "화분",
+      "categoryUrl": "https://www.idus.com/v2/search?keyword=플랜트",
+      "description": "자연과 함께하는"
+    }
+  ],
+  "directions": [
+    "동쪽",
+    "서쪽",
+    "남쪽",
+    "북쪽",
+    "동남쪽",
+    "서남쪽",
+    "동북쪽",
+    "서북쪽"
+  ]
+}
