@@ -7,6 +7,7 @@ interface KeywordBadgeProps {
   color?: string
   searchUrl?: string     // 아이디어스 검색 URL
   categoryUrl?: string   // 카테고리 URL
+  meta?: string          // 작품 수 등 부가 정보
 }
 
 export default function KeywordBadge({ 
@@ -15,7 +16,8 @@ export default function KeywordBadge({
   value, 
   color,
   searchUrl,
-  categoryUrl 
+  categoryUrl,
+  meta,
 }: KeywordBadgeProps) {
   // 클릭 가능한 키워드인지 확인 (URL이 있는 경우)
   const isClickable = searchUrl || categoryUrl
@@ -31,6 +33,9 @@ export default function KeywordBadge({
       </div>
       
       <div className="flex items-center gap-2">
+        {meta && (
+          <span className="text-xs text-gray-400">{meta}</span>
+        )}
         {color && (
           <span 
             className="w-5 h-5 rounded-full border border-gray-100 shadow-sm"

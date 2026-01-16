@@ -9,6 +9,7 @@ import KeywordBadge from '@/components/KeywordBadge'
 import ItemCard from '@/components/ItemCard'
 import LoadingScreen from '@/components/LoadingScreen'
 import StickyFooter from '@/components/StickyFooter'
+import ShareCard from '@/components/ShareCard'
 import { fetchFortune, fetchRecommendedItems } from '@/lib/api'
 import type { FortuneResult, RecommendedItem } from '@/types'
 
@@ -68,6 +69,7 @@ function ResultContent() {
   const [items, setItems] = useState<RecommendedItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showShareCard, setShowShareCard] = useState(false)
 
   const birthDate = searchParams.get('birthDate')
   const name = searchParams.get('name') || '회원'
@@ -135,6 +137,16 @@ function ResultContent() {
   const maxScore = useMemo(() => {
     if (!fortune) return 0
     return Math.max(...Object.values(fortune.scores).map((s) => s.score))
+  }, [fortune])
+
+  const keywordCountMap = useMemo(() => {
+    if (!fortune) return {}
+    const getCountText = (value: string) => `${formatCount(getMockCount(value))}개`
+    return {
+      [fortune.luckyKeywords.color.label]: getCountText(String(fortune.luckyKeywords.color.value)),
+      [fortune.luckyKeywords.material.label]: getCountText(String(fortune.luckyKeywords.material.value)),
+      [fortune.luckyKeywords.category.label]: `인기 작품 ${formatCount(getMockCount(String(fortune.luckyKeywords.category.value), 1500))}개`,
+    }
   }, [fortune])
 
   if (isLoading) {
@@ -288,6 +300,7 @@ function ResultContent() {
                 color={keyword.hex}
                 searchUrl={keyword.searchUrl}
                 categoryUrl={keyword.categoryUrl}
+                meta={keywordCountMap[keyword.label as keyof typeof keywordCountMap]}
               />
             ))}
           </div>
@@ -379,7 +392,7 @@ function ResultContent() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          onClick={handleShare}
+          onClick={() => setShowShareCard(true)}
           className="w-full bg-gradient-to-r from-pink-400 to-rose-400 text-white font-bold py-4 rounded-full shadow-lg flex items-center justify-center gap-2 hover:shadow-xl transition-shadow"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -442,6 +455,14 @@ function ResultContent() {
           fortune.luckyKeywords.category.categoryUrl ? '카테고리' : undefined
         }
       />
+
+      {/* 공유 카드 모달 */}
+      {showShareCard && (
+        <ShareCard
+          fortune={fortune}
+          onClose={() => setShowShareCard(false)}
+        />
+      )}
     </div>
   )
 }
